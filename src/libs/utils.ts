@@ -1,0 +1,1 @@
+export const lute = globalThis.Lute.New()

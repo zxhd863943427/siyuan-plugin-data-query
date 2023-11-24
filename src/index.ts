@@ -23,6 +23,7 @@ import "@/types/index.d"
 
 
 import { SettingUtils } from "./libs/setting-utils";
+import { lute } from "./libs/utils";
 
 const STORAGE_NAME = "menu-config";
 const TAB_TYPE = "custom_tab";
@@ -182,7 +183,7 @@ class DV {
         this.container = document.createElement("div")
         this.container.classList.add('data-query-embed')
         this.item.lastElementChild.insertAdjacentElement("beforebegin", this.container);
-        this.lute = globalThis.Lute.New()
+        this.lute = lute
     }
 
     async query() {
