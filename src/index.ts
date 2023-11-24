@@ -495,11 +495,11 @@ class DV{
 
         return this
     }
-    buildSQLstmt(QueryList: Query[]){
+    buildSQLstmt(queryList: Query[]){
         //using
         let stmt = "select * from blocks where "
         let queryStmt = []
-        for (let queryItem of this.queryList){
+        for (let queryItem of queryList){
             queryStmt.push(this.genQuery(queryItem))
         }
         
