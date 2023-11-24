@@ -552,11 +552,13 @@ class DV{
         if (!CustomEmbed){
             CustomEmbed = this.container
         }
+        this.protyle.element.addEventListener("keydown",cancelKeyEvent,true)
        const rotateElement = this.item.querySelector(".fn__rotate");
        if (rotateElement) {
            rotateElement.classList.remove("fn__rotate");
        }
        const customElem = document.createElement("div")
+       customElem.classList.add("data-query-embed")
        if(typeof CustomEmbed === 'string'){
            const html = `<div class="protyle-wysiwyg__embed">${CustomEmbed}</div>`
            customElem.innerHTML = html
@@ -566,8 +568,13 @@ class DV{
            customElem.appendChild(CustomEmbed)
            this.item.lastElementChild.insertAdjacentElement("beforebegin", customElem)
        }
+       this.item.addEventListener("keydown",cancelEvent,true)
        customElem.setAttribute("contenteditable","false")
        customElem.onmousedown = (el)=>{el.stopPropagation()}
+       customElem.onmouseup = (el)=>{el.stopPropagation()}
+       customElem.onkeydown = (el)=>{el.stopPropagation()}
+       customElem.onkeyup = (el)=>{el.stopPropagation()}
+       customElem.oninput = (el)=>{el.stopPropagation()}
        customElem.onclick = (el)=>{
         const selection = window.getSelection();
         const length = selection.toString().length; 
@@ -575,7 +582,7 @@ class DV{
             return
         }
         el.stopPropagation()}
-       customElem.onmouseup = (el)=>{el.stopPropagation()}
+       
        if (this.top) {
            // 前进后退定位 https://ld246.com/article/1667652729995
            this.protyle.contentElement.scrollTop = this.top;
@@ -584,18 +591,36 @@ class DV{
    }
 }
 
-function hasSelection(element:Element) {
-    let selection = document.getSelection();
-    
-    if (selection.rangeCount > 0) {
-      let range = selection.getRangeAt(0);
-      
-      if (element.contains(range.commonAncestorContainer)) {
-        // 存在选择
-        return true;
-      }
-    }
-    
-    // 不存在选择
-    return false; 
+function cancelEvent(el) {
+    console.log(111)
+    el.stopPropagation()
   }
+
+function cancelKeyEvent(el:KeyboardEvent){
+    let nodeElement:HTMLElement = document.getSelection().getRangeAt(0).startContainer.parentElement
+    if(hasParentWithClass(nodeElement,"data-query-embed")){
+        el.stopPropagation()
+    }
+}
+
+
+
+function hasParentWithClass(element:HTMLElement, className:string) {
+
+    // 获取父元素
+    let parent = element.parentElement;
+
+    // 通过while循环遍历父元素
+    while (parent && !parent.classList.contains('protyle-wysiwyg--attr')) {
+
+        // 检查父元素是否包含指定class
+        if (parent.classList.contains(className)) {
+            return true;
+        }
+
+        // 继续向上获取父元素
+        parent = parent.parentElement;
+    }
+
+    return false;
+}
