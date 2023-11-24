@@ -151,8 +151,7 @@ class DataViewBlock{
     }
     async getValueFromDatabase(key:string){
         if (!this.databaseAttr){
-            let databaseAttrData = await fetchSyncPost('/api/av/getAttributeViewKeys',{"id":this.blockItem.block.id})
-            this.databaseAttr = databaseAttrData.data
+            this.getDatabase()
         }
         
         let searchValue = this.searchKeyValues(key)
@@ -161,7 +160,10 @@ class DataViewBlock{
         }
         return ''
     }
-
+    async getDatabase(){
+        let databaseAttrData = await fetchSyncPost('/api/av/getAttributeViewKeys',{"id":this.blockItem.block.id})
+        this.databaseAttr = databaseAttrData.data
+    }
     private searchKeyValues(searchKey:string) {
         for (let doc of this.databaseAttr) {
             for (let kv of doc.keyValues) {
