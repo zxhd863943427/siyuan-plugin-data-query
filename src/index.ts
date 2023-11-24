@@ -36,6 +36,7 @@ export default class PluginSample extends Plugin {
         
         console.log(this.i18n.helloPlugin);
         window.DataViewBlock = DataViewBlock
+        window.DV = DV
     }
 
     onLayoutReady() {
@@ -88,25 +89,28 @@ interface KeyValue {
     keyValues: KeyValue[];  
   }
 
+interface BlockItem {
+    block: IBlock,
+    blockPaths: IBreadcrumb[]
+}
+
 class DataViewBlock{
-    private blockKeys:string[]
-    private ialKeys:string[]
+    // private blockKeys:string[]
+    // private ialKeys:string[]
     private databaseAttr:AV[]
     private sqlData:Block
-    blockItem: {
-        block: IBlock,
-        blockPaths: IBreadcrumb[]
-    }
+    blockItem: BlockItem
 
     constructor(
         blockItem: {
             block: IBlock,
             blockPaths: IBreadcrumb[]
-        },sqlData){
+        },
+        sqlData:Block){
         this.blockItem = blockItem
         this.sqlData = sqlData
-        this.blockKeys = Object.keys(blockItem.block)
-        this.ialKeys = Object.keys(blockItem.block.ial)
+        // this.blockKeys = Object.keys(blockItem.block)
+        // this.ialKeys = Object.keys(blockItem.block.ial)
     }
     async getValue(key:string){
         console.log("av")
@@ -145,13 +149,14 @@ class DataViewBlock{
     }
 }
 
-class DataView{
+class DV{
     private SQLstmt: string;
     private QueryList: Query[];
     private protyle:IProtyle
     private item:HTMLElement
     private top:number|null
-    block:DataViewBlock[]
+    blockList:DataViewBlock[]
+
     constructor(protyle:IProtyle,item:HTMLElement,top:number|null){
         this.protyle = protyle
         this.item = item
@@ -159,5 +164,72 @@ class DataView{
         this.SQLstmt = ""
         this.QueryList = []
     }
+
+    async query(){
+        let queryBody:string
+        if (this.SQLstmt){
+            queryBody = this.SQLstmt
+        }
+        else{
+            queryBody = this.buildSQLstmt(this.QueryList)
+        }
+        let sqlData:Block[] = (await fetchSyncPost('/api/query/sql',{stmt: queryBody})).data
+        let idList = (sqlData).map(x=>x.id)
+        let iblocks:BlockItem[] = (await fetchSyncPost("/api/search/getEmbedBlock",{
+            embedBlockID: this.item.getAttribute("data-node-id"),
+            includeIDs: idList,
+            headingMode: this.item.getAttribute("custom-heading-mode") === "1" ? 1 : 0,
+            breadcrumb:false
+        })).data.blocks
+        this.blockList = this.buildBlockList(iblocks,sqlData)
+        return this.blockList
+    }
+
+    sql(SQLstmt:string){
+        this.SQLstmt = SQLstmt
+    }
+
+    buildSQLstmt(QueryList: Query[]){
+        //using
+        return ""
+    }
+    
+    buildBlockList(iblocks:BlockItem[],sqlData:Block[]){
+        let ret:DataViewBlock[] = []
+        let idList = (iblocks).map(x=>x.block.id)
+        for (let id of idList){
+            let blockItem = iblocks.find(x=>x.block.id === id)
+            let sqlItem = sqlData.find(x=>x.id === id)
+            let DVblock = new DataViewBlock(blockItem,sqlItem)
+            ret.push(DVblock)
+        }
+        return ret
+    }
+
+    show(CustomEmbed:HTMLElement|string){
+       const rotateElement = this.item.querySelector(".fn__rotate");
+       if (rotateElement) {
+           rotateElement.classList.remove("fn__rotate");
+       }
+       const customElem = document.createElement("div")
+       if(typeof CustomEmbed === 'string'){
+           const html = `<div class="protyle-wysiwyg__embed">${CustomEmbed}</div>`
+           customElem.innerHTML = html
+           this.item.lastElementChild.insertAdjacentElement("beforebegin", customElem);
+       }
+       else if(CustomEmbed instanceof Element){
+           customElem.appendChild(CustomEmbed)
+           this.item.lastElementChild.insertAdjacentElement("beforebegin", customElem)
+       }
+       customElem.setAttribute("contenteditable","false")
+       customElem.onmousedown = (el)=>{el.stopPropagation()}
+       customElem.onclick = (el)=>{el.stopPropagation()}
+       customElem.onmouseup = (el)=>{el.stopPropagation()}
+       if (this.top) {
+           // 前进后退定位 https://ld246.com/article/1667652729995
+           this.protyle.contentElement.scrollTop = this.top;
+       }
+       this.item.style.height = "";
+   }
 }
 
