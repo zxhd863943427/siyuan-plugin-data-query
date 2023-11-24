@@ -199,6 +199,9 @@ class DV {
         this.top = top
         this.SQLstmt = ""
         this.queryList = []
+        this.container = document.createElement("div")
+        this.container.classList.add('data-query-embed')
+        this.item.lastElementChild.insertAdjacentElement("beforebegin", this.container);
     }
 
     async query() {
@@ -547,35 +550,36 @@ class DV {
         return ret
     }
 
-    show(CustomEmbed: HTMLElement | string | null) {
-
-        if (!CustomEmbed) {
-            CustomEmbed = this.container
-        }
-        this.protyle.element.addEventListener("keydown", cancelKeyEvent, true)
-        const rotateElement = this.item.querySelector(".fn__rotate");
-        if (rotateElement) {
-            rotateElement.classList.remove("fn__rotate");
-        }
+    addElement(CustomEmbed: HTMLElement | string ){
         const customElem = document.createElement("div")
-        customElem.classList.add("data-query-embed")
+
         if (typeof CustomEmbed === 'string') {
             const html = `<div class="protyle-wysiwyg__embed">${CustomEmbed}</div>`
             customElem.innerHTML = html
-            this.item.lastElementChild.insertAdjacentElement("beforebegin", customElem);
         }
         else if (CustomEmbed instanceof Element) {
             customElem.appendChild(CustomEmbed)
-            this.item.lastElementChild.insertAdjacentElement("beforebegin", customElem)
         }
-        this.item.addEventListener("keydown", cancelEvent, true)
-        customElem.setAttribute("contenteditable", "false")
-        customElem.onmousedown = (el) => { el.stopPropagation() }
-        customElem.onmouseup = (el) => { el.stopPropagation() }
-        customElem.onkeydown = (el) => { el.stopPropagation() }
-        customElem.onkeyup = (el) => { el.stopPropagation() }
-        customElem.oninput = (el) => { el.stopPropagation() }
-        customElem.onclick = (el) => {
+        
+        this.container.append(customElem)
+    }
+
+    show() {
+
+        this.protyle.element.addEventListener("keydown", cancelKeyEvent, true)
+        const rotateElement = this.item.querySelector(".fn__rotate");
+                
+        if (rotateElement) {
+            rotateElement.classList.remove("fn__rotate");
+        }
+
+        this.container.setAttribute("contenteditable", "false")
+        this.container.onmousedown = (el) => { el.stopPropagation() }
+        this.container.onmouseup = (el) => { el.stopPropagation() }
+        this.container.onkeydown = (el) => { el.stopPropagation() }
+        this.container.onkeyup = (el) => { el.stopPropagation() }
+        this.container.oninput = (el) => { el.stopPropagation() }
+        this.container.onclick = (el) => {
             const selection = window.getSelection();
             const length = selection.toString().length;
             if (length === 0 && (el.target as HTMLElement).tagName === "SPAN") {
@@ -588,7 +592,9 @@ class DV {
             // 前进后退定位 https://ld246.com/article/1667652729995
             this.protyle.contentElement.scrollTop = this.top;
         }
+
         this.item.style.height = "";
+        
     }
 }
 
