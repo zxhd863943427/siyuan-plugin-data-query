@@ -33,14 +33,14 @@ export default class PluginSample extends Plugin {
     private settingUtils: SettingUtils;
 
     async onload() {
-        
+
         console.log(this.i18n.helloPlugin);
         window.DataViewBlock = DataViewBlock
         window.DV = DV
     }
 
     onLayoutReady() {
-       
+
     }
 
     async onunload() {
@@ -54,7 +54,7 @@ export default class PluginSample extends Plugin {
      * A custom setting pannel provided by svelte
      */
     openDIYSetting(): void {
-        
+
     }
 
     private eventBusPaste(event: any) {
@@ -72,33 +72,33 @@ export default class PluginSample extends Plugin {
 }
 
 type Query = {
-    type:'parent_id' | 'root_id' | 'hash' | 'box' | 'path' | 'hpath' | 'name' | 'alias' | 'memo' | 'tag' | 'content' | 'fcontent' | 'markdown' | 'length' | 'type' | 'subtype' | 'ial' | 'sort' | 'created' | 'updated';
-    operator:string;
-    value:Object|string|number|Date;
+    type: 'parent_id' | 'root_id' | 'hash' | 'box' | 'path' | 'hpath' | 'name' | 'alias' | 'memo' | 'tag' | 'content' | 'fcontent' | 'markdown' | 'length' | 'type' | 'subtype' | 'ial' | 'sort' | 'created' | 'updated';
+    operator: string;
+    value: Object | string | number | Date;
 }
 
 interface KeyValue {
-    key: any; 
+    key: any;
     values: any[];
-  }
-  
-  interface AV {
+}
+
+interface AV {
     avID: string;
-    avName: string; 
+    avName: string;
     blockIDs: string[];
-    keyValues: KeyValue[];  
-  }
+    keyValues: KeyValue[];
+}
 
 interface BlockItem {
     block: IBlock,
     blockPaths: IBreadcrumb[]
 }
 
-class DataViewBlock{
+class DataViewBlock {
     // private blockKeys:string[]
     // private ialKeys:string[]
-    private databaseAttr:AV[]
-    private sqlData:Block
+    private databaseAttr: AV[]
+    private sqlData: Block
     blockItem: BlockItem
 
     constructor(
@@ -106,73 +106,73 @@ class DataViewBlock{
             block: IBlock,
             blockPaths: IBreadcrumb[]
         },
-        sqlData:Block){
+        sqlData: Block) {
         this.blockItem = blockItem
         this.sqlData = sqlData
         // this.blockKeys = Object.keys(blockItem.block)
         // this.ialKeys = Object.keys(blockItem.block.ial)
     }
 
-    get dom(){
+    get dom() {
         return this.blockItem.block['content']
     }
 
-    getValue(key:string){
+    getValue(key: string) {
         console.log("av")
-        if (key === "dom"){
+        if (key === "dom") {
             return this.dom
         }
-        if (this.sqlData[key]){
+        if (this.sqlData[key]) {
             return this.sqlData[key]
         }
-        if (this.blockItem.block[key]){
+        if (this.blockItem.block[key]) {
             return this.blockItem.block[key]
         }
-        if (this.blockItem.block.ial[key]){
+        if (this.blockItem.block.ial[key]) {
             return this.blockItem.block.ial[key]
         }
-        if (this.blockItem.block.ial[`custom-${key}`]){
+        if (this.blockItem.block.ial[`custom-${key}`]) {
             return this.blockItem.block.ial[`custom-${key}`]
         }
-        if (this.databaseAttr){
+        if (this.databaseAttr) {
             let searchValue = this.searchKeyValues(key)
-            if (searchValue != null){
+            if (searchValue != null) {
                 return searchValue
             }
         }
         return this.getValueFromDatabase(key)
     }
-    getValueFromSql(key:string){
-        if (this.sqlData[key]){
+    getValueFromSql(key: string) {
+        if (this.sqlData[key]) {
             return this.sqlData[key]
         }
         return ''
     }
-    getValueFromIal(key:string){
-        if (this.blockItem.block.ial[key]){
+    getValueFromIal(key: string) {
+        if (this.blockItem.block.ial[key]) {
             return this.blockItem.block.ial[key]
         }
-        if (this.blockItem.block.ial[`custom-${key}`]){
+        if (this.blockItem.block.ial[`custom-${key}`]) {
             return this.blockItem.block.ial[`custom-${key}`]
         }
         return ''
     }
-    async getValueFromDatabase(key:string){
-        if (!this.databaseAttr){
+    async getValueFromDatabase(key: string) {
+        if (!this.databaseAttr) {
             this.getDatabase()
         }
-        
+
         let searchValue = this.searchKeyValues(key)
-        if (searchValue != null){
+        if (searchValue != null) {
             return searchValue
         }
         return ''
     }
-    async getDatabase(){
-        let databaseAttrData = await fetchSyncPost('/api/av/getAttributeViewKeys',{"id":this.blockItem.block.id})
+    async getDatabase() {
+        let databaseAttrData = await fetchSyncPost('/api/av/getAttributeViewKeys', { "id": this.blockItem.block.id })
         this.databaseAttr = databaseAttrData.data
     }
-    private searchKeyValues(searchKey:string) {
+    private searchKeyValues(searchKey: string) {
         for (let doc of this.databaseAttr) {
             for (let kv of doc.keyValues) {
                 if (kv.key.name === searchKey) {
@@ -184,16 +184,16 @@ class DataViewBlock{
     }
 }
 
-class DV{
+class DV {
     private SQLstmt: string;
     private queryList: Query[];
-    private protyle:IProtyle
-    private item:HTMLElement
-    private top:number|null
-    blockList:DataViewBlock[]
-    container:HTMLElement
+    private protyle: IProtyle
+    private item: HTMLElement
+    private top: number | null
+    blockList: DataViewBlock[]
+    container: HTMLElement
 
-    constructor(protyle:IProtyle,item:HTMLElement,top:number|null){
+    constructor(protyle: IProtyle, item: HTMLElement, top: number | null) {
         this.protyle = protyle
         this.item = item
         this.top = top
@@ -201,32 +201,32 @@ class DV{
         this.queryList = []
     }
 
-    async query(){
-        let queryBody:string
-        if (this.SQLstmt){
+    async query() {
+        let queryBody: string
+        if (this.SQLstmt) {
             queryBody = this.SQLstmt
         }
-        else{
+        else {
             queryBody = this.buildSQLstmt(this.queryList)
         }
-        let sqlData:Block[] = (await fetchSyncPost('/api/query/sql',{stmt: queryBody})).data
-        let idList = (sqlData).map(x=>x.id)
-        let iblocks:BlockItem[] = (await fetchSyncPost("/api/search/getEmbedBlock",{
+        let sqlData: Block[] = (await fetchSyncPost('/api/query/sql', { stmt: queryBody })).data
+        let idList = (sqlData).map(x => x.id)
+        let iblocks: BlockItem[] = (await fetchSyncPost("/api/search/getEmbedBlock", {
             embedBlockID: this.item.getAttribute("data-node-id"),
             includeIDs: idList,
             headingMode: this.item.getAttribute("custom-heading-mode") === "1" ? 1 : 0,
-            breadcrumb:false
+            breadcrumb: false
         })).data.blocks
-        this.blockList = this.buildBlockList(iblocks,sqlData)
+        this.blockList = this.buildBlockList(iblocks, sqlData)
         return this.blockList
     }
 
-    sql(SQLstmt:string){
+    sql(SQLstmt: string) {
         this.SQLstmt = SQLstmt
         return this
     }
 
-    cleanQuery(){
+    cleanQuery() {
         this.SQLstmt = ""
         this.queryList = []
         return this
@@ -454,19 +454,19 @@ class DV{
         return this
     }
 
-    value(ialKey,ialValue, operator: string = "like") {
+    value(ialKey, ialValue, operator: string = "like") {
         switch (operator) {
             case "like":
                 this.queryList.push({
                     type: "ial",
-                    value: {ialKey:`'%custom-${ialKey}%'`,ialValue:`'%${ialValue}%'`},
+                    value: { ialKey: `'%custom-${ialKey}%'`, ialValue: `'%${ialValue}%'` },
                     operator: operator
                 })
                 break
             default:
                 this.queryList.push({
                     type: "ial",
-                    value: {ialKey:`'custom-${ialKey}'`,ialValue:`'${ialValue}'`},
+                    value: { ialKey: `'custom-${ialKey}'`, ialValue: `'${ialValue}'` },
                     operator: operator
                 })
         }
@@ -512,20 +512,20 @@ class DV{
 
         return this
     }
-    buildSQLstmt(queryList: Query[]){
+    buildSQLstmt(queryList: Query[]) {
         //using
         let stmt = "select * from blocks where "
         let queryStmt = []
-        for (let queryItem of queryList){
+        for (let queryItem of queryList) {
             queryStmt.push(this.genQuery(queryItem))
         }
-        
+
         stmt += queryStmt.join(" AND ")
         return stmt
     }
 
-     private genQuery(queryItem:Query){
-        switch(queryItem.type){
+    private genQuery(queryItem: Query) {
+        switch (queryItem.type) {
             case "ial":
                 return `  id in (select block_id from attributes where name ${queryItem.operator} ${(queryItem.value as any).ialKey} and value ${queryItem.operator} ${(queryItem.value as any).ialValue}) `
             case "tag":
@@ -533,79 +533,80 @@ class DV{
             default:
                 return ` ${queryItem.type} ${queryItem.operator} ${queryItem.value} `
         }
-     }
-    
-    buildBlockList(iblocks:BlockItem[],sqlData:Block[]){
-        let ret:DataViewBlock[] = []
-        let idList = (iblocks).map(x=>x.block.id)
-        for (let id of idList){
-            let blockItem = iblocks.find(x=>x.block.id === id)
-            let sqlItem = sqlData.find(x=>x.id === id)
-            let DVblock = new DataViewBlock(blockItem,sqlItem)
+    }
+
+    buildBlockList(iblocks: BlockItem[], sqlData: Block[]) {
+        let ret: DataViewBlock[] = []
+        let idList = (iblocks).map(x => x.block.id)
+        for (let id of idList) {
+            let blockItem = iblocks.find(x => x.block.id === id)
+            let sqlItem = sqlData.find(x => x.id === id)
+            let DVblock = new DataViewBlock(blockItem, sqlItem)
             ret.push(DVblock)
         }
         return ret
     }
 
-    show(CustomEmbed:HTMLElement|string|null){
+    show(CustomEmbed: HTMLElement | string | null) {
 
-        if (!CustomEmbed){
+        if (!CustomEmbed) {
             CustomEmbed = this.container
         }
-        this.protyle.element.addEventListener("keydown",cancelKeyEvent,true)
-       const rotateElement = this.item.querySelector(".fn__rotate");
-       if (rotateElement) {
-           rotateElement.classList.remove("fn__rotate");
-       }
-       const customElem = document.createElement("div")
-       customElem.classList.add("data-query-embed")
-       if(typeof CustomEmbed === 'string'){
-           const html = `<div class="protyle-wysiwyg__embed">${CustomEmbed}</div>`
-           customElem.innerHTML = html
-           this.item.lastElementChild.insertAdjacentElement("beforebegin", customElem);
-       }
-       else if(CustomEmbed instanceof Element){
-           customElem.appendChild(CustomEmbed)
-           this.item.lastElementChild.insertAdjacentElement("beforebegin", customElem)
-       }
-       this.item.addEventListener("keydown",cancelEvent,true)
-       customElem.setAttribute("contenteditable","false")
-       customElem.onmousedown = (el)=>{el.stopPropagation()}
-       customElem.onmouseup = (el)=>{el.stopPropagation()}
-       customElem.onkeydown = (el)=>{el.stopPropagation()}
-       customElem.onkeyup = (el)=>{el.stopPropagation()}
-       customElem.oninput = (el)=>{el.stopPropagation()}
-       customElem.onclick = (el)=>{
-        const selection = window.getSelection();
-        const length = selection.toString().length; 
-        if (length === 0 && (el.target as HTMLElement).tagName === "SPAN"){
-            return
+        this.protyle.element.addEventListener("keydown", cancelKeyEvent, true)
+        const rotateElement = this.item.querySelector(".fn__rotate");
+        if (rotateElement) {
+            rotateElement.classList.remove("fn__rotate");
         }
-        el.stopPropagation()}
-       
-       if (this.top) {
-           // 前进后退定位 https://ld246.com/article/1667652729995
-           this.protyle.contentElement.scrollTop = this.top;
-       }
-       this.item.style.height = "";
-   }
+        const customElem = document.createElement("div")
+        customElem.classList.add("data-query-embed")
+        if (typeof CustomEmbed === 'string') {
+            const html = `<div class="protyle-wysiwyg__embed">${CustomEmbed}</div>`
+            customElem.innerHTML = html
+            this.item.lastElementChild.insertAdjacentElement("beforebegin", customElem);
+        }
+        else if (CustomEmbed instanceof Element) {
+            customElem.appendChild(CustomEmbed)
+            this.item.lastElementChild.insertAdjacentElement("beforebegin", customElem)
+        }
+        this.item.addEventListener("keydown", cancelEvent, true)
+        customElem.setAttribute("contenteditable", "false")
+        customElem.onmousedown = (el) => { el.stopPropagation() }
+        customElem.onmouseup = (el) => { el.stopPropagation() }
+        customElem.onkeydown = (el) => { el.stopPropagation() }
+        customElem.onkeyup = (el) => { el.stopPropagation() }
+        customElem.oninput = (el) => { el.stopPropagation() }
+        customElem.onclick = (el) => {
+            const selection = window.getSelection();
+            const length = selection.toString().length;
+            if (length === 0 && (el.target as HTMLElement).tagName === "SPAN") {
+                return
+            }
+            el.stopPropagation()
+        }
+
+        if (this.top) {
+            // 前进后退定位 https://ld246.com/article/1667652729995
+            this.protyle.contentElement.scrollTop = this.top;
+        }
+        this.item.style.height = "";
+    }
 }
 
 function cancelEvent(el) {
     console.log(111)
     el.stopPropagation()
-  }
+}
 
-function cancelKeyEvent(el:KeyboardEvent){
-    let nodeElement:HTMLElement = document.getSelection().getRangeAt(0).startContainer.parentElement
-    if(hasParentWithClass(nodeElement,"data-query-embed")){
+function cancelKeyEvent(el: KeyboardEvent) {
+    let nodeElement: HTMLElement = document.getSelection().getRangeAt(0).startContainer.parentElement
+    if (hasParentWithClass(nodeElement, "data-query-embed")) {
         el.stopPropagation()
     }
 }
 
 
 
-function hasParentWithClass(element:HTMLElement, className:string) {
+function hasParentWithClass(element: HTMLElement, className: string) {
 
     // 获取父元素
     let parent = element.parentElement;
