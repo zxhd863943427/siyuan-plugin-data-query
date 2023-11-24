@@ -21,9 +21,11 @@ import {
 import "@/index.scss";
 import "@/types/index.d"
 
+import List from "@/view/list.svelte";
+
 
 import { SettingUtils } from "./libs/setting-utils";
-import { lute } from "./libs/utils";
+import { lute, setLute } from "./libs/utils";
 
 const STORAGE_NAME = "menu-config";
 const TAB_TYPE = "custom_tab";
@@ -42,7 +44,7 @@ export default class PluginSample extends Plugin {
     }
 
     onLayoutReady() {
-
+        setLute({})
     }
 
     async onunload() {
@@ -550,6 +552,18 @@ class DV {
         let elem = document.createElement("div")
         elem.innerHTML = this.lute.Md2BlockDOM(md)
         this.container.append(elem)
+    }
+
+    list(data:any[]){
+        let listContainer = document.createElement("div")
+        const list = new List({
+            target: listContainer,
+            props: {
+                // we'll learn about props later
+                dataList:data
+            }
+        })
+        this.container.append(listContainer)
     }
 
     show() {
