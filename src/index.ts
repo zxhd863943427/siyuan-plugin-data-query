@@ -149,7 +149,7 @@ class DataViewBlock{
         }
         return ''
     }
-    private async getValueFromDatabase(key:string){
+    async getValueFromDatabase(key:string){
         if (!this.databaseAttr){
             let databaseAttrData = await fetchSyncPost('/api/av/getAttributeViewKeys',{"id":this.blockItem.block.id})
             this.databaseAttr = databaseAttrData.data
