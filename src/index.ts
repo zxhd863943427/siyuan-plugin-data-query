@@ -15,7 +15,8 @@ import {
     Constants,
     IWebSocketData,
     IProtyle,
-    fetchSyncPost
+    fetchSyncPost,
+    Lute
 } from "siyuan";
 import "@/index.scss";
 import "@/types/index.d"
@@ -190,6 +191,7 @@ class DV {
     private protyle: IProtyle
     private item: HTMLElement
     private top: number | null
+    private lute:Lute
     blockList: DataViewBlock[]
     container: HTMLElement
 
@@ -202,6 +204,7 @@ class DV {
         this.container = document.createElement("div")
         this.container.classList.add('data-query-embed')
         this.item.lastElementChild.insertAdjacentElement("beforebegin", this.container);
+        this.lute = globalThis.Lute.New()
     }
 
     async query() {
@@ -562,6 +565,12 @@ class DV {
         }
         
         this.container.append(customElem)
+    }
+
+    addMarkdown(md:string){
+        let elem = document.createElement("div")
+        elem.innerHTML = this.lute.Md2BlockDOM(md)
+        this.container.append(elem)
     }
 
     show() {
