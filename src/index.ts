@@ -191,6 +191,7 @@ class DV{
     private item:HTMLElement
     private top:number|null
     blockList:DataViewBlock[]
+    container:HTMLElement
 
     constructor(protyle:IProtyle,item:HTMLElement,top:number|null){
         this.protyle = protyle
@@ -546,7 +547,11 @@ class DV{
         return ret
     }
 
-    show(CustomEmbed:HTMLElement|string){
+    show(CustomEmbed:HTMLElement|string|null){
+
+        if (!CustomEmbed){
+            CustomEmbed = this.container
+        }
        const rotateElement = this.item.querySelector(".fn__rotate");
        if (rotateElement) {
            rotateElement.classList.remove("fn__rotate");
@@ -563,7 +568,13 @@ class DV{
        }
        customElem.setAttribute("contenteditable","false")
        customElem.onmousedown = (el)=>{el.stopPropagation()}
-       customElem.onclick = (el)=>{el.stopPropagation()}
+       customElem.onclick = (el)=>{
+        const selection = window.getSelection();
+        const length = selection.toString().length; 
+        if (length === 0 && (el.target as HTMLElement).tagName === "SPAN"){
+            return
+        }
+        el.stopPropagation()}
        customElem.onmouseup = (el)=>{el.stopPropagation()}
        if (this.top) {
            // 前进后退定位 https://ld246.com/article/1667652729995
@@ -573,3 +584,18 @@ class DV{
    }
 }
 
+function hasSelection(element:Element) {
+    let selection = document.getSelection();
+    
+    if (selection.rangeCount > 0) {
+      let range = selection.getRangeAt(0);
+      
+      if (element.contains(range.commonAncestorContainer)) {
+        // 存在选择
+        return true;
+      }
+    }
+    
+    // 不存在选择
+    return false; 
+  }
