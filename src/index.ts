@@ -126,6 +126,12 @@ class DataViewBlock{
         if (this.blockItem.block.ial[`custom-${key}`]){
             return this.blockItem.block.ial[`custom-${key}`]
         }
+        if (this.databaseAttr){
+            let searchValue = this.searchKeyValues(key)
+            if (searchValue != null){
+                return searchValue
+            }
+        }
         return this.getValueFromDatabase(key)
     }
     getValueFromSql(key:string){
