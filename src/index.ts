@@ -72,9 +72,9 @@ export default class PluginSample extends Plugin {
 }
 
 type Query = {
-    type:string;
+    type:'parent_id' | 'root_id' | 'hash' | 'box' | 'path' | 'hpath' | 'name' | 'alias' | 'memo' | 'tag' | 'content' | 'fcontent' | 'markdown' | 'length' | 'type' | 'subtype' | 'ial' | 'sort' | 'created' | 'updated';
     operator:string;
-    value:string;
+    value:Object|string|number|Date;
 }
 
 interface KeyValue {
@@ -112,7 +112,7 @@ class DataViewBlock{
         // this.blockKeys = Object.keys(blockItem.block)
         // this.ialKeys = Object.keys(blockItem.block.ial)
     }
-    async getValue(key:string){
+    getValue(key:string){
         console.log("av")
         if (this.blockItem.block[key]){
             return this.blockItem.block[key]
@@ -126,6 +126,24 @@ class DataViewBlock{
         if (this.blockItem.block.ial[`custom-${key}`]){
             return this.blockItem.block.ial[`custom-${key}`]
         }
+        return this.getValueFromDatabase(key)
+    }
+    getValueFromSql(key:string){
+        if (this.sqlData[key]){
+            return this.sqlData[key]
+        }
+        return ''
+    }
+    getValueFromIal(key:string){
+        if (this.blockItem.block.ial[key]){
+            return this.blockItem.block.ial[key]
+        }
+        if (this.blockItem.block.ial[`custom-${key}`]){
+            return this.blockItem.block.ial[`custom-${key}`]
+        }
+        return ''
+    }
+    private async getValueFromDatabase(key:string){
         if (!this.databaseAttr){
             let databaseAttrData = await fetchSyncPost('/api/av/getAttributeViewKeys',{"id":this.blockItem.block.id})
             this.databaseAttr = databaseAttrData.data
@@ -137,6 +155,7 @@ class DataViewBlock{
         }
         return ''
     }
+
     private searchKeyValues(searchKey:string) {
         for (let doc of this.databaseAttr) {
             for (let kv of doc.keyValues) {
@@ -151,7 +170,7 @@ class DataViewBlock{
 
 class DV{
     private SQLstmt: string;
-    private QueryList: Query[];
+    private queryList: Query[];
     private protyle:IProtyle
     private item:HTMLElement
     private top:number|null
@@ -162,7 +181,7 @@ class DV{
         this.item = item
         this.top = top
         this.SQLstmt = ""
-        this.QueryList = []
+        this.queryList = []
     }
 
     async query(){
@@ -171,7 +190,7 @@ class DV{
             queryBody = this.SQLstmt
         }
         else{
-            queryBody = this.buildSQLstmt(this.QueryList)
+            queryBody = this.buildSQLstmt(this.queryList)
         }
         let sqlData:Block[] = (await fetchSyncPost('/api/query/sql',{stmt: queryBody})).data
         let idList = (sqlData).map(x=>x.id)
@@ -187,12 +206,315 @@ class DV{
 
     sql(SQLstmt:string){
         this.SQLstmt = SQLstmt
+        return this
     }
 
+    cleanQueryList(){
+        this.queryList = []
+    }
+
+    parent_id(parent_id, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "parent_id",
+                    value: `'%${parent_id}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    root_id(root_id, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "root_id",
+                    value: `'%${root_id}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    hash(hash, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "hash",
+                    value: `'%${hash}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    box(box, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "box",
+                    value: `'%${box}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    path(path, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "path",
+                    value: `'%${path}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    hpath(hpath, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "hpath",
+                    value: `'%${hpath}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    name(name, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "name",
+                    value: `'%${name}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    alias(alias, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "alias",
+                    value: `'%${alias}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    memo(memo, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "memo",
+                    value: `'%${memo}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    tag(tag, operator: string = "like") {
+        switch (operator) {
+            case "withSub":
+                this.queryList.push({
+                    type: "tag",
+                    value: `'#${tag}[^#\n]*#'`,
+                    operator: "REGEXP"
+                })
+                break;
+            case "like":
+                this.queryList.push({
+                    type: "tag",
+                    value: `'%#${tag}#%'`,
+                    operator: "like"
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "tag",
+                    value: `'%${tag}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    content(content, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "content",
+                    value: `'%${content}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    fcontent(fcontent, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "fcontent",
+                    value: `'%${fcontent}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    markdown(markdown, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "markdown",
+                    value: `'%${markdown}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    length(length, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "length",
+                    value: `'%${length}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    type(type, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "type",
+                    value: `'%${type}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    subtype(subtype, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "subtype",
+                    value: `'%${subtype}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    value(ialKey,ialValue, operator: string = "like") {
+        switch (operator) {
+            case "like":
+                this.queryList.push({
+                    type: "ial",
+                    value: {ialKey:`'%custom-${ialKey}%'`,ialValue:`'%${ialValue}%'`},
+                    operator: operator
+                })
+                break
+            default:
+                this.queryList.push({
+                    type: "ial",
+                    value: {ialKey:`'custom-${ialKey}'`,ialValue:`'${ialValue}'`},
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    sort(sort, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "sort",
+                    value: `'%${sort}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    created(created, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "created",
+                    value: `'%${created}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
+    updated(updated, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "updated",
+                    value: `'%${updated}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
     buildSQLstmt(QueryList: Query[]){
         //using
-        return ""
+        let stmt = "select * from blocks where "
+        let queryStmt = []
+        for (let queryItem of this.queryList){
+            queryStmt.push(this.genQuery(queryItem))
+        }
+        
+        stmt += queryStmt.join(" AND ")
+        return stmt
     }
+
+     private genQuery(queryItem:Query){
+        switch(queryItem.type){
+            case "ial":
+                return `  id in (select block_id from attributes where name ${queryItem.operator} ${(queryItem.value as any).ialKey} and value ${queryItem.operator} ${(queryItem.value as any).ialValue}) `
+            case "tag":
+                return `  (tag ${queryItem.operator} ${queryItem.value} OR markdown ${queryItem.operator} ${queryItem.value})`
+            default:
+                return ` ${queryItem.type} ${queryItem.operator} ${queryItem.value} `
+        }
+     }
     
     buildBlockList(iblocks:BlockItem[],sqlData:Block[]){
         let ret:DataViewBlock[] = []
