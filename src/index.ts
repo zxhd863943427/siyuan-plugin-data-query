@@ -119,6 +119,9 @@ class DataViewBlock{
 
     getValue(key:string){
         console.log("av")
+        if (key === "dom"){
+            return this.dom
+        }
         if (this.sqlData[key]){
             return this.sqlData[key]
         }
