@@ -1,9 +1,9 @@
 {
-  "name": "plugin-sample-vite-svelte",
-  "author": "frostime",
-  "url": "https://github.com/siyuan-note/plugin-sample-vite-svelte",
-  "version": "0.2.8",
-  "minAppVersion": "2.10.14",
+  "name": "siyuan-plugin-data-query",
+  "author": "zxhd863943427",
+  "url": "https://github.com/zxhd863943427/siyuan-plugin-data-query",
+  "version": "0.0.1",
+  "minAppVersion": "2.10.16",
   "backends": [
     "windows",
     "linux",
@@ -15,11 +15,11 @@
   ],
   "displayName": {
     "en_US": "Plugin sample with vite and svelte",
-    "zh_CN": "插件样例 vite + svelte 版"
+    "zh_CN": "低级数据查询"
   },
   "description": {
     "en_US": "SiYuan plugin sample with vite and svelte",
-    "zh_CN": "使用 vite 和 svelte 开发的思源插件样例"
+    "zh_CN": "低级的数据查询插件，用于改善js运行嵌入块的体验"
   },
   "readme": {
     "en_US": "README.md",
