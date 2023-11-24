@@ -209,8 +209,10 @@ class DV{
         return this
     }
 
-    cleanQueryList(){
+    cleanQuery(){
+        this.SQLstmt = ""
         this.queryList = []
+        return this
     }
 
     parent_id(parent_id, operator: string = "like") {
