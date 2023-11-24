@@ -120,3 +120,45 @@ interface IBreadcrumb {
     subType: string,
     children: []
 }
+
+type Query = {
+    type: 'parent_id' | 'root_id' | 'hash' | 'box' | 'path' | 'hpath' | 'name' | 'alias' | 'memo' | 'tag' | 'content' | 'fcontent' | 'markdown' | 'length' | 'type' | 'subtype' | 'ial' | 'sort' | 'created' | 'updated';
+    operator: string;
+    value: Object | string | number | Date;
+}
+
+interface KeyValue {
+    key: any;
+    values: any[];
+}
+
+interface AV {
+    avID: string;
+    avName: string;
+    blockIDs: string[];
+    keyValues: KeyValue[];
+}
+
+interface BlockItem {
+    block: IBlock,
+    blockPaths: IBreadcrumb[]
+}
+
+interface DataViewBlock {
+    blockItem: {
+        block: IBlock;
+        blockPaths: IBreadcrumb[];
+    };
+    sqlData: Block;
+    dom: any;
+    getValue(key: string): string | any;
+    getValueFromSql(key: string): string;
+    getValueFromIal(key: string): string;
+    getValueFromDatabase(key: string): Promise<any>;
+    getDatabase(): Promise<void>;
+    searchKeyValues(searchKey: string): {
+        key: {
+            name: string;
+        } | null;
+    } | null;
+}

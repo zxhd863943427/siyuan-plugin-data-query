@@ -72,28 +72,6 @@ export default class PluginSample extends Plugin {
     }
 }
 
-type Query = {
-    type: 'parent_id' | 'root_id' | 'hash' | 'box' | 'path' | 'hpath' | 'name' | 'alias' | 'memo' | 'tag' | 'content' | 'fcontent' | 'markdown' | 'length' | 'type' | 'subtype' | 'ial' | 'sort' | 'created' | 'updated';
-    operator: string;
-    value: Object | string | number | Date;
-}
-
-interface KeyValue {
-    key: any;
-    values: any[];
-}
-
-interface AV {
-    avID: string;
-    avName: string;
-    blockIDs: string[];
-    keyValues: KeyValue[];
-}
-
-interface BlockItem {
-    block: IBlock,
-    blockPaths: IBreadcrumb[]
-}
 
 class DataViewBlock {
     // private blockKeys:string[]
