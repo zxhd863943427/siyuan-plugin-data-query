@@ -112,13 +112,18 @@ class DataViewBlock{
         // this.blockKeys = Object.keys(blockItem.block)
         // this.ialKeys = Object.keys(blockItem.block.ial)
     }
+
+    get dom(){
+        return this.blockItem.block['content']
+    }
+
     getValue(key:string){
         console.log("av")
-        if (this.blockItem.block[key]){
-            return this.blockItem.block[key]
-        }
         if (this.sqlData[key]){
             return this.sqlData[key]
+        }
+        if (this.blockItem.block[key]){
+            return this.blockItem.block[key]
         }
         if (this.blockItem.block.ial[key]){
             return this.blockItem.block.ial[key]
