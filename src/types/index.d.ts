@@ -80,3 +80,43 @@ interface Window {
         languages: any;
     };
 }
+
+interface IRiffCard {
+    due?: string;
+    reps?: number; // 闪卡复习次数
+}
+
+interface IObject {
+    [key: string]: string;
+}
+
+interface IBlock {
+    riffCard?: IRiffCard,
+    depth?: number,
+    box?: string;
+    path?: string;
+    hPath?: string;
+    id?: string;
+    rootID?: string;
+    type?: string;
+    content?: string;
+    def?: IBlock;
+    defID?: string
+    defPath?: string
+    refText?: string;
+    name?: string;
+    memo?: string;
+    alias?: string;
+    refs?: IBlock[];
+    children?: IBlock[]
+    length?: number
+    ial: IObject
+}
+
+interface IBreadcrumb {
+    id: string,
+    name: string,
+    type: string,
+    subType: string,
+    children: []
+}
