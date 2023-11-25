@@ -2,6 +2,7 @@ import {
     fetchSyncPost,
 } from "siyuan";
 import "@/types/index.d"
+import { isNumeric, isValidDate, isValidJSON, parseDatabaseValue, parseDateString } from "@/libs/utils";
 
 export class DataViewBlock {
     // private blockKeys:string[]
@@ -18,6 +19,7 @@ export class DataViewBlock {
         sqlData: Block) {
         this.blockItem = blockItem
         this.sqlData = sqlData
+        this.databaseAttr = null
         // this.blockKeys = Object.keys(blockItem.block)
         // this.ialKeys = Object.keys(blockItem.block.ial)
     }
@@ -32,21 +34,24 @@ export class DataViewBlock {
             return this.dom
         }
         if (this.sqlData[key]) {
-            return this.sqlData[key]
+            return this.parseCommonValue(this.sqlData[key])
         }
         if (this.blockItem.block[key]) {
-            return this.blockItem.block[key]
+            return this.parseCommonValue(this.blockItem.block[key])
         }
         if (this.blockItem.block.ial[key]) {
-            return this.blockItem.block.ial[key]
+            return this.parseCommonValue(this.blockItem.block.ial[key])
         }
         if (this.blockItem.block.ial[`custom-${key}`]) {
-            return this.blockItem.block.ial[`custom-${key}`]
+            return this.parseCommonValue(this.blockItem.block.ial[`custom-${key}`])
         }
-        if (this.databaseAttr) {
+        if (this.databaseAttr != null) {
             let searchValue = this.searchKeyValues(key)
             if (searchValue != null) {
-                return searchValue
+                return parseDatabaseValue(searchValue)
+            }
+            else{
+                return ''
             }
         }
         return this.getValueFromDatabase(key)
@@ -73,7 +78,7 @@ export class DataViewBlock {
 
         let searchValue = this.searchKeyValues(key)
         if (searchValue != null) {
-            return searchValue
+            return parseDatabaseValue(searchValue)
         }
         return ''
     }
@@ -90,5 +95,18 @@ export class DataViewBlock {
             }
         }
         return null;
+    }
+
+    private parseCommonValue(str:string){
+        if(isValidDate(str)){
+            return parseDateString(str)
+        }
+        if (isNumeric(str)){
+            return Number(str)
+        }
+        if (isValidJSON(str)){
+            return JSON.parse(str)
+        }
+        return str
     }
 }
