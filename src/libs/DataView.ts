@@ -295,7 +295,7 @@ export class DataView {
         return this
     }
 
-    value(ialKey, ialValue, operator: string = "like") {
+    ial(ialKey, ialValue, operator: string = "like") {
         switch (operator) {
             case "like":
                 this.queryList.push({
