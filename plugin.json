@@ -14,12 +14,12 @@
     "desktop-window"
   ],
   "displayName": {
-    "en_US": "Plugin sample with vite and svelte",
-    "zh_CN": "低级数据查询"
+    "en_US": "data query helper",
+    "zh_CN": "基础数据查询"
   },
   "description": {
-    "en_US": "SiYuan plugin sample with vite and svelte",
-    "zh_CN": "低级的数据查询插件，用于改善js运行嵌入块的体验"
+    "en_US": "A basic data query plugin designed to enhance the user experience of running embedded JavaScript blocks.",
+    "zh_CN": "很基础的数据查询插件，用于改善js运行嵌入块的体验"
   },
   "readme": {
     "en_US": "README.md",
