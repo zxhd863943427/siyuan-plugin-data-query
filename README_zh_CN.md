@@ -8,6 +8,13 @@
 列表展示：
 ![list](asset/list.png)
 
+卡片展示：
+![card](asset/cardview.png)
+
+表格展示：
+![table](asset/tableView.png)
+
+
 标签子级查询：
 ![tag](asset/tagWithSub.png)
 

@@ -8,6 +8,12 @@ Streaming query:
 List display:
 ![list](asset/list.png)
 
+card display:
+![card](asset/cardview.png)
+
+table display:
+![table](asset/tableView.png)
+
 Tag sub-level query:
 ![tag](asset/tagWithSub.png)
 
