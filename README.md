@@ -20,5 +20,5 @@ Tag sub-level query:
 Custom attribute query:
 ![ial](asset/queryIal.png)
 
-Property view data acquisition:
+Property view database acquisition:
 ![database](asset/databaseValue.png)
