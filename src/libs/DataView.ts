@@ -450,7 +450,11 @@ export class DataView {
         }
 
         this.item.style.height = "";
-        
+        let content = lute.BlockDOM2Content(this.container.innerText).replaceAll('\n',' ')
+        fetchSyncPost('/api/search/updateEmbedBlock',{
+            id:this.item.getAttribute("data-node-id"),
+            content:content
+        })
     }
 }
 
