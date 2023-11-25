@@ -124,7 +124,7 @@ interface IBreadcrumb {
 }
 
 type Query = {
-    type: 'parent_id' | 'root_id' | 'hash' | 'box' | 'path' | 'hpath' | 'name' | 'alias' | 'memo' | 'tag' | 'content' | 'fcontent' | 'markdown' | 'length' | 'type' | 'subtype' | 'ial' | 'sort' | 'created' | 'updated';
+    type: "id" | 'parent_id' | 'root_id' | 'hash' | 'box' | 'path' | 'hpath' | 'name' | 'alias' | 'memo' | 'tag' | 'content' | 'fcontent' | 'markdown' | 'length' | 'type' | 'subtype' | 'ial' | 'sort' | 'created' | 'updated';
     operator: string;
     value: Object | string | number | Date;
 }

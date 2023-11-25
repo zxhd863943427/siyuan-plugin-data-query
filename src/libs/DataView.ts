@@ -60,6 +60,19 @@ export class DataView {
         return this
     }
 
+    id(id, operator: string = "like") {
+        switch (operator) {
+            default:
+                this.queryList.push({
+                    type: "id",
+                    value: `'%${id}%'`,
+                    operator: operator
+                })
+        }
+
+        return this
+    }
+
     parent_id(parent_id, operator: string = "like") {
         switch (operator) {
             default:
