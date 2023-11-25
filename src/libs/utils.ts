@@ -33,6 +33,7 @@ export const setLute = (options) => {
     //     lute.SetImageLazyLoading(options.lazyLoadImage);
     // }
     lute.SetBlockRef(true);
+    lute.SetHTMLTag2TextMark(true)
     if (window.siyuan.emojis[0].items.length > 0) {
         const emojis = {};
         window.siyuan.emojis[0].items.forEach(item => {
