@@ -8,6 +8,7 @@ import { lute } from "@/libs/utils";
 import { DataViewBlock } from "./DataViewBlock";
 import List from "@/view/list.svelte";
 import Card from "@/view/card.svelte"
+import Table from "@/view/table.svelte"
 export class DataView {
     private SQLstmt: string;
     private queryList: Query[];
@@ -430,6 +431,16 @@ export class DataView {
             }
         })
         this.container.append(cardContainer)
+    }
+    table(data:any[]){
+        let tableContainer = document.createElement('div')
+        new Table({
+            target:tableContainer,
+            props:{
+                tableData : data
+            }
+        })
+        this.container.append(tableContainer)
     }
 
     show() {
