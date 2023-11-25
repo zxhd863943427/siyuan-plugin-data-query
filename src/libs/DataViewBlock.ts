@@ -29,7 +29,7 @@ export class DataViewBlock {
     }
 
     getValue(key: string) {
-        console.log("av")
+        // console.log("av")
         if (key === "dom") {
             return this.dom
         }
