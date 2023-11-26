@@ -14,6 +14,8 @@
 表格展示：
 ![table](asset/tableView.png)
 
+重复过滤（一炮三响）：
+![uniblock](asset/uniblock.png)
 
 标签子级查询：
 ![tag](asset/tagWithSub.png)
