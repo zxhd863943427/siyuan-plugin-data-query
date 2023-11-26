@@ -479,6 +479,57 @@ export class DataView {
             content:content
         })
     }
+    static uniBlocks(blocks: DataViewBlock[], mode: 'max' | 'min') {
+        // 正则表达式用于匹配所有的data-node-id值
+        const idRegex = /data-node-id="([^"]+)"/g;
+        let blockMap = new Map();
+        let parentChildMap = new Map();
+
+        // 首先，构建一个包含所有block ID的集合
+        let allBlockIds = new Set(blocks.map(block => block.getValue('id')));
+
+        // 遍历blocks，提取所有的id，并建立父子关系
+        blocks.forEach(block => {
+            let dom = block.getValue('dom');
+            let match;
+            let parentId = null;
+
+            blockMap.set(block.getValue('id'), block);
+
+            while ((match = idRegex.exec(dom)) !== null) {
+                let id = match[1];
+
+                if (parentId === null) {
+                    parentId = id; // 第一个匹配的id是父id
+                } else if (parentId !== id) {
+                    let children = parentChildMap.get(parentId) || new Set();
+                    children.add(id);
+                    parentChildMap.set(parentId, children);
+                }
+            }
+        });
+
+        // 根据模式过滤blocks
+        let filteredBlocks: DataViewBlock[];
+
+        if (mode === 'max') {
+            // 移除所有子block
+            filteredBlocks = blocks.filter(block => {
+                return ![...parentChildMap.values()].some(children => children.has(block.getValue('id')));
+            });
+        } else if (mode === 'min') {
+            // 移除所有在block列表中有子block的block
+            filteredBlocks = blocks.filter(block => {
+                let children = parentChildMap.get(block.getValue('id')) || new Set();
+                // 保留那些子block不在block列表中的block
+                return [...children].every(childId => !allBlockIds.has(childId));
+            });
+        } else {
+            throw new Error('Invalid mode. Use "max" or "min".');
+        }
+
+        return filteredBlocks;
+    }
 }
 
 
