@@ -472,6 +472,12 @@ export class DataView {
             this.protyle.contentElement.scrollTop = this.top;
         }
 
+        // 确保内部节点不可编辑
+        let editableNodeList = this.container.querySelectorAll('[contenteditable="true"]')
+        editableNodeList.forEach(node=>{
+            node.setAttribute('contenteditable','false')
+        })
+
         this.item.style.height = "";
         let content = lute.BlockDOM2Content(this.container.innerText).replaceAll('\n',' ')
         fetchSyncPost('/api/search/updateEmbedBlock',{
