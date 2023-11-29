@@ -16,6 +16,7 @@ export class DataView {
     private item: HTMLElement
     private top: number | null
     private lute:Lute
+    private limitNumber:number
     blockList: DataViewBlock[]
     container: HTMLElement
 
@@ -29,6 +30,7 @@ export class DataView {
         this.container.classList.add('data-query-embed')
         this.item.lastElementChild.insertAdjacentElement("beforebegin", this.container);
         this.lute = lute
+        this.limitNumber = 256
     }
 
     async query() {
@@ -355,6 +357,9 @@ export class DataView {
 
         return this
     }
+    limit(limit:number){
+        this.limitNumber = limit
+    }
     buildSQLstmt(queryList: Query[]) {
         //using
         let stmt = "select * from blocks where "
@@ -364,6 +369,7 @@ export class DataView {
         }
 
         stmt += queryStmt.join(" AND ")
+        stmt += ` limit ${this.limitNumber} `
         return stmt
     }
 
