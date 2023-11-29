@@ -2,7 +2,7 @@
   "name": "siyuan-plugin-data-query",
   "author": "zxhd863943427",
   "url": "https://github.com/zxhd863943427/siyuan-plugin-data-query",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "minAppVersion": "2.11.0",
   "backends": [
     "windows",
