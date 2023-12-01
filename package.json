@@ -13,6 +13,10 @@
     "build": "vite build"
   },
   "devDependencies": {
+    "@event-calendar/core": "^2.4.1",
+    "@event-calendar/day-grid": "^2.4.1",
+    "@event-calendar/list": "^2.4.1",
+    "@event-calendar/time-grid": "^2.4.1",
     "@sveltejs/vite-plugin-svelte": "^2.0.3",
     "@tsconfig/svelte": "^4.0.1",
     "@types/node": "^20.2.0",

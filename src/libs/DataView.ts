@@ -9,6 +9,7 @@ import { DataViewBlock } from "./DataViewBlock";
 import List from "@/view/list.svelte";
 import Card from "@/view/card.svelte"
 import Table from "@/view/table.svelte"
+import Calendar from "@/view/calendar.svelte"
 export class DataView {
     private SQLstmt: string;
     private queryList: Query[];
@@ -447,6 +448,87 @@ export class DataView {
             }
         })
         this.container.append(tableContainer)
+    }
+
+    calendar(data:any[],option:{
+        type:"custom"|'database'|"block"
+        blockType:"updated"|"created"|"between"
+    }|null){
+        if (!option){
+            option = {
+                type:"block",
+                blockType:"created"
+        }
+        }
+        let calendarContainer = document.createElement('div')
+        
+        if(data.every(x=>x instanceof DataViewBlock)){
+            console.log("is block")
+            data = data.map(x=>{
+                let start:Date
+                let end:Date
+                let hour
+                switch(option.blockType){
+                    case "created":
+                        start = x.getValue("created")
+                        end = x.getValue("created")  
+                        hour = start.getHours()
+                        end.setHours(hour+1) 
+                        break;
+                    case "updated":
+                        start = x.getValue("updated")
+                        end = x.getValue("updated")  
+                        hour = start.getHours()
+                        end.setHours(hour+1)
+                        break;
+                    case "between":
+                        start = x.getValue("created")
+                        end = x.getValue("updated")  
+                }
+                let content =  x.getValue("content")
+                return {
+                start: start,
+                end: end,
+                title: content,
+                nodeId: x.getValue("id"),
+                color:`var(--b3-font-background${content.charCodeAt(0) % 13+1})`
+            }})
+        }
+        if (option.type === 'database'){
+            data = data.map(x=>{
+                let dataDate = x[0].getValue(x[1]).value
+                let start
+                let end
+                if (!(dataDate instanceof Date)){
+                    start=dataDate.startDate
+                    end = dataDate.endDate
+                    let hour = end.getHours()
+                    end.setHours(hour+1)
+                }
+                else{
+                    start = x[0].getValue(x[1]).value
+                    end = x[0].getValue(x[1]).value
+                    let hour = start.getHours()
+                    end.setHours(hour+1)
+                }
+                let content =  x[0].getValue("content")
+                return {
+                    start: start,
+                    end: end,
+                    title: content,
+                    nodeId: x[0].getValue("id"),
+                    color:`var(--b3-font-background${content.charCodeAt(0) % 13+1})`
+                }
+            })
+        }
+        console.log(data)
+        new Calendar({
+            target:calendarContainer,
+            props:{
+                calendarData : data
+            }
+        })
+        this.container.append(calendarContainer)
     }
 
     show() {
