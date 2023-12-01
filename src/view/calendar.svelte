@@ -13,6 +13,7 @@
     }[];
 
     let plugins = [DayGrid,TimeGrid,List];
+    let lastClickTime = new Date().getTime();
     let options = {
         view: 'listWeek',
         headerToolbar: {
@@ -36,7 +37,17 @@
         },
         dayMaxEvents: true,
         nowIndicator: true,
-        selectable: true
+        selectable: true,
+        eventClick:(info)=>{
+            // console.log(info)
+            let currentTime = new Date().getTime();
+            let timeDiff = currentTime - lastClickTime;
+            
+            if (timeDiff < 300 && info.event.resourceIds[0]){
+                window.open(`siyuan://blocks/${info.event.resourceIds[0]}`)
+            }
+            lastClickTime = currentTime
+        }
     };
 </script>
 

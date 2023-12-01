@@ -490,7 +490,7 @@ export class DataView {
                 start: start,
                 end: end,
                 title: content,
-                nodeId: x.getValue("id"),
+                resourceIds: [x.getValue("id")],
                 color:`var(--b3-font-background${content.charCodeAt(0) % 13+1})`
             }})
         }
@@ -516,7 +516,7 @@ export class DataView {
                     start: start,
                     end: end,
                     title: content,
-                    nodeId: x[0].getValue("id"),
+                    resourceIds: [x[0].getValue("id")],
                     color:`var(--b3-font-background${content.charCodeAt(0) % 13+1})`
                 }
             })
