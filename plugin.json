@@ -2,7 +2,7 @@
   "name": "siyuan-plugin-data-query",
   "author": "zxhd863943427",
   "url": "https://github.com/zxhd863943427/siyuan-plugin-data-query",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "minAppVersion": "2.11.0",
   "backends": [
     "windows",
@@ -31,6 +31,6 @@
     ]
   },
   "keywords": [
-    "plugin", "查询", "卡片", "列表","表格","card","list","table"
+    "plugin", "查询", "卡片", "列表","表格","日历","card","list","table", "calendar"
   ]
 }
