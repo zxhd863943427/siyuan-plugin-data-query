@@ -69,7 +69,10 @@
     div :global(.ec-day-grid.ec-month-view .ec-event-title [data-node-id]){
         font-size: 1em;
     }
-    div :global([data-node-id]){
+    div :global(.ec-day-grid.ec-month-view .protyle-action){
+        display: none;
+    }
+    div :global(.ec-day-grid [data-node-id]){
         padding: 0px;
         margin: 0px;
     }
