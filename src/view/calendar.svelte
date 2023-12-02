@@ -15,11 +15,11 @@
     let plugins = [DayGrid,TimeGrid,List];
     let lastClickTime = new Date().getTime();
     let options = {
-        view: 'listWeek',
+        view: 'listMonth',
         headerToolbar: {
             start: 'prev,next today',
             center: 'title',
-            end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
         },
         buttonText: function (texts) {
             texts.resourceTimeGridWeek = 'resources';
@@ -38,6 +38,7 @@
         dayMaxEvents: true,
         nowIndicator: true,
         selectable: true,
+        slotDuration:"1:00:00",
         eventClick:(info)=>{
             // console.log(info)
             let currentTime = new Date().getTime();
@@ -50,5 +51,13 @@
         }
     };
 </script>
+<div>
+    <Calendar {plugins} {options} />
+</div>
 
-<Calendar {plugins} {options} />
+
+<style lang="scss">
+    div :global(h2){
+        font-size: 1.25em;
+    }
+</style>
