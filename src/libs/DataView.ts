@@ -461,7 +461,7 @@ export class DataView {
         }
         }
         let calendarContainer = document.createElement('div')
-        
+        console.log('calendar')
         if(data.every(x=>x instanceof DataViewBlock)){
             console.log("is block")
             data = data.map(x=>{
@@ -486,10 +486,11 @@ export class DataView {
                         end = x.getValue("updated")  
                 }
                 let content =  x.getValue("content")
+                let dom = x.getValue("dom")
                 return {
                 start: start,
                 end: end,
-                title: content,
+                title: {html:dom},
                 resourceIds: [x.getValue("id")],
                 color:`var(--b3-font-background${content.charCodeAt(0) % 13+1})`
             }})
@@ -512,10 +513,11 @@ export class DataView {
                     end.setHours(hour+1)
                 }
                 let content =  x[0].getValue("content")
+                let dom = x[0].getValue("dom")
                 return {
                     start: start,
                     end: end,
-                    title: content,
+                    title: {html:dom},
                     resourceIds: [x[0].getValue("id")],
                     color:`var(--b3-font-background${content.charCodeAt(0) % 13+1})`
                 }

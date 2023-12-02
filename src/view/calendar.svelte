@@ -60,4 +60,17 @@
     div :global(h2){
         font-size: 1.25em;
     }
+    div :global(.protyle-attr){
+        display: none;
+    }
+    div :global(.ec-day-grid.ec-month-view .ec-event-title){
+        max-height: 1em;
+    }
+    div :global(.ec-day-grid.ec-month-view .ec-event-title [data-node-id]){
+        font-size: 1em;
+    }
+    div :global([data-node-id]){
+        padding: 0px;
+        margin: 0px;
+    }
 </style>
