@@ -84,4 +84,7 @@
         padding: 0px;
         margin: 0px;
     }
+    div :global(.ec-toolbar){
+        flex-wrap: wrap;
+    }
 </style>
