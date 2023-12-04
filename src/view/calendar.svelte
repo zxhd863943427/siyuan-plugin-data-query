@@ -11,7 +11,8 @@
         nodeId:string;
         display:string
     }[];
-
+    let showFirstDate = new Date()
+    showFirstDate.setDate(1)
     let plugins = [DayGrid,TimeGrid,List];
     let lastClickTime = new Date().getTime();
     let options = {
@@ -48,7 +49,8 @@
                 window.open(`siyuan://blocks/${info.event.resourceIds[0]}`)
             }
             lastClickTime = currentTime
-        }
+        },
+        date :showFirstDate,
     };
 </script>
 <div>
