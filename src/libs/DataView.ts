@@ -43,17 +43,6 @@ export class DataView extends DataQuery{
         return new DataViewBlock(blockItem, sqlData)
     }
 
-    buildBlockList(iblocks: BlockItem[], sqlData: Block[]) {
-        let ret: DataViewBlock[] = []
-        let idList = (iblocks).map(x => x.block.id)
-        for (let id of idList) {
-            let blockItem = iblocks.find(x => x.block.id === id)
-            let sqlItem = sqlData.find(x => x.id === id)
-            let DVblock = new DataViewBlock(blockItem, sqlItem)
-            ret.push(DVblock)
-        }
-        return ret
-    }
 
     addElement(CustomEmbed: HTMLElement | string ){
         const customElem = document.createElement("div")
