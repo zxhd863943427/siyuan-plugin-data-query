@@ -87,7 +87,7 @@ class DatabaseValue {
     }
 
     get value(): any {
-        return this.value;
+        return this.values;
     }
 
     toString(): string {
