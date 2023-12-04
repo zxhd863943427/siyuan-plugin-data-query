@@ -5,11 +5,12 @@
     import List  from "@event-calendar/list";
 
     export let calendarData:{
-        start:string|Date;
+        start: string|Date;
         end:string|Date|null;
-        content:any;
-        nodeId:string;
-        display:string
+        title: {html:string}|string|{domNodes: Node[]},
+        resourceIds: string[],
+        color:string
+
     }[];
     let showFirstDate = new Date()
     showFirstDate.setDate(1)
