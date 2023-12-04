@@ -45,6 +45,10 @@ export class DataViewBlock {
         if (this.blockItem.block.ial[`custom-${key}`]) {
             return this.parseCommonValue(this.blockItem.block.ial[`custom-${key}`])
         }
+        //部分块没有updated, 直接返回created
+        if (key === "updated") {
+            return this.getValue("created")
+        }
         if (this.databaseAttr != null) {
             let searchValue = this.searchKeyValues(key)
             if (searchValue != null) {
