@@ -18,12 +18,14 @@
     let options = {
         view: 'listMonth',
         headerToolbar: {
-            start: 'prev,next today',
+            start: 'prev,next,today',
             center: 'title',
-            end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+            end: 'listYear,dayGridMonth,timeGridWeek,timeGridDay,listMonth'
         },
         buttonText: function (texts) {
-            texts.resourceTimeGridWeek = 'resources';
+            texts.listYear = 'year';
+            texts.dayGridMonth = 'mon'
+            texts.today = 'now'
             return texts;
         },
         resources: [
@@ -60,7 +62,11 @@
 
 <style lang="scss">
     div :global(h2){
-        font-size: 1.25em;
+        font-size: 1.1em;
+    }
+    div :global(.ec-day-grid .ec-body .ec-day){
+        min-height: 5em;
+        max-height: 7em;
     }
     div :global(.protyle-attr){
         display: none;
