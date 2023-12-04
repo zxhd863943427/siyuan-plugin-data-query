@@ -7,11 +7,17 @@
   "backends": [
     "windows",
     "linux",
-    "darwin"
+    "darwin",
+    "ios",
+    "android"
   ],
   "frontends": [
     "desktop",
+    "mobile",
+    "browser-desktop",
+    "browser-mobile",
     "desktop-window"
+    
   ],
   "displayName": {
     "en_US": "data query helper",
