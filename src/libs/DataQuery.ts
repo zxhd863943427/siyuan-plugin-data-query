@@ -378,7 +378,7 @@ export class DataQuery {
         }
         return ret
     }
-    static uniBlocks(blocks: DataViewBlock[], mode: 'max' | 'min') {
+    uniBlocks(blocks: DataViewBlock[], mode: 'max' | 'min') {
         // 正则表达式用于匹配所有的data-node-id值
         const idRegex = /data-node-id="([^"]+)"/g;
         let blockMap = new Map();
