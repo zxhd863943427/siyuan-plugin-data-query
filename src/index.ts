@@ -20,8 +20,8 @@ export default class PluginSample extends Plugin {
     async onload() {
 
         console.log(this.i18n.helloPlugin);
-        window.DataViewBlock = DataViewBlock
-        window.DV = DataView
+        globalThis.DataViewBlock = DataViewBlock
+        globalThis.DV = DataView
     }
 
     onLayoutReady() {
