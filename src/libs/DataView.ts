@@ -200,8 +200,8 @@ export class DataView {
             case "withSub":
                 this.queryList.push({
                     type: "tag",
-                    value: `'#${tag}[^#\n]*#'`,
-                    operator: "REGEXP"
+                    value: `'%#${tag}%#%'`,
+                    operator: "like"
                 })
                 break;
             case "like":
@@ -214,7 +214,7 @@ export class DataView {
             default:
                 this.queryList.push({
                     type: "tag",
-                    value: `'%${tag}%'`,
+                    value: `'%#${tag}#%'`,
                     operator: operator
                 })
         }
@@ -378,8 +378,6 @@ export class DataView {
         switch (queryItem.type) {
             case "ial":
                 return `  id in (select block_id from attributes where name ${queryItem.operator} ${(queryItem.value as any).ialKey} and value ${queryItem.operator} ${(queryItem.value as any).ialValue}) `
-            case "tag":
-                return `  (tag ${queryItem.operator} ${queryItem.value} OR markdown ${queryItem.operator} ${queryItem.value})`
             default:
                 return ` ${queryItem.type} ${queryItem.operator} ${queryItem.value} `
         }
