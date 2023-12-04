@@ -97,21 +97,33 @@ export class DataView extends DataQuery{
         this.container.append(tableContainer)
     }
 
-    calendar(data:any[],option:{
+    calendar(data:DataViewBlock[]|any[], option:{
         type:"custom"|'database'|"block"
-        blockType:"updated"|"created"|"between"
+        blockType:"updated"|"created"|"between",
+        queryKey:null|string|string[]
     }|null){
         if (!option){
             option = {
                 type:"block",
-                blockType:"created"
+                blockType:"created",
+                queryKey:null
         }
         }
+        let calendarData:{
+            start: string|Date;
+            end:string|Date|null;
+            title: {html:string}|string|{domNodes: Node[]},
+            resourceIds: string[],
+            color:string
+        }[] 
         let calendarContainer = document.createElement('div')
         console.log('calendar')
-        if(data.every(x=>x instanceof DataViewBlock)){
+        if (option.type==='custom'){
+            calendarData = data as any[]
+        }
+        if(option.type==='block' && option.queryKey===null){
             console.log("is block")
-            data = data.map(x=>{
+            calendarData = data.map(x=>{
                 let start:Date
                 let end:Date
                 let hour
@@ -142,11 +154,67 @@ export class DataView extends DataQuery{
                 color:`var(--b3-font-background${content.charCodeAt(0) % 13+1})`
             }})
         }
-        if (option.type === 'database'){
-            data = data.map(x=>{
-                let dataDate = x[0].getValue(x[1]).value
+        if (option.type==='block' && option.queryKey!=null){
+            calendarData = data.map(x=>{
+                let dataDate
                 let start
                 let end
+                if (Array.isArray(option.queryKey)){
+                    start = x.getValue(option.queryKey[0])
+                    end = x.getValue(option.queryKey[1])
+                    let hour = end.getHours()
+                    end.setHours(hour+1)
+
+                    let content =  x.getValue("content")
+                    let dom = x.getValue("dom")
+                    return {
+                        start: start,
+                        end: end,
+                        title: {html:dom},
+                        resourceIds: [x.getValue("id")],
+                        color:`var(--b3-font-background${content.charCodeAt(0) % 13+1})`
+                    }
+                }
+                dataDate = x.getValue(option.queryKey)
+                if ((dataDate instanceof Date)){
+                    start = x.getValue(option.queryKey)
+                    end = x.getValue(option.queryKey)
+                    let hour = start.getHours()
+                    end.setHours(hour+1)
+                }
+                let content =  x.getValue("content")
+                let dom = x.getValue("dom")
+                return {
+                    start: start,
+                    end: end,
+                    title: {html:dom},
+                    resourceIds: [x.getValue("id")],
+                    color:`var(--b3-font-background${content.charCodeAt(0) % 13+1})`
+                }
+            })
+        }
+        if (option.type === 'database' && option.queryKey!=null){
+            calendarData = data.map(x=>{
+                let dataDate
+                let start
+                let end
+                if (Array.isArray(option.queryKey)){
+                    start = x.getValue(option.queryKey[0]).value
+                    end = x.getValue(option.queryKey[1]).value
+                    let hour = end.getHours()
+                    end.setHours(hour+1)
+
+                    let content =  x.getValue("content")
+                    let dom = x.getValue("dom")
+                    return {
+                        start: start,
+                        end: end,
+                        title: {html:dom},
+                        resourceIds: [x.getValue("id")],
+                        color:`var(--b3-font-background${content.charCodeAt(0) % 13+1})`
+                    }
+                }
+                dataDate = x.getValue(option.queryKey).value
                 if (!(dataDate instanceof Date)){
                     start=dataDate.startDate
                     end = dataDate.endDate
@@ -154,18 +222,18 @@ export class DataView extends DataQuery{
                     end.setHours(hour+1)
                 }
                 else{
-                    start = x[0].getValue(x[1]).value
-                    end = x[0].getValue(x[1]).value
+                    start = x.getValue(option.queryKey).value
+                    end = x.getValue(option.queryKey).value
                     let hour = start.getHours()
                     end.setHours(hour+1)
                 }
-                let content =  x[0].getValue("content")
-                let dom = x[0].getValue("dom")
+                let content =  x.getValue("content")
+                let dom = x.getValue("dom")
                 return {
                     start: start,
                     end: end,
                     title: {html:dom},
-                    resourceIds: [x[0].getValue("id")],
+                    resourceIds: [x.getValue("id")],
                     color:`var(--b3-font-background${content.charCodeAt(0) % 13+1})`
                 }
             })
@@ -174,7 +242,7 @@ export class DataView extends DataQuery{
         new Calendar({
             target:calendarContainer,
             props:{
-                calendarData : data
+                calendarData : calendarData
             }
         })
         this.container.append(calendarContainer)
