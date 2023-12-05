@@ -36,7 +36,7 @@ export class DataViewBlock {
         //sqldata 和 blockItem.block 只有'created','updated' 需要解析
         if (this.sqlData[key]) {
             if (['created','updated'].indexOf(key)!=-1){
-            return this.parseCommonValue(this.sqlData[key])
+                return this.parseCommonValue(this.sqlData[key])
             }
             return this.sqlData[key]
         }
@@ -95,12 +95,19 @@ export class DataViewBlock {
         this.databaseAttr = databaseAttrData.data
     }
     private searchKeyValues(searchKey: string) {
-        for (let doc of this.databaseAttr) {
-            for (let kv of doc.keyValues) {
-                if (kv.key.name === searchKey) {
-                    return kv;
+        try{
+            for (let doc of this.databaseAttr) {
+                for (let kv of doc.keyValues) {
+                    if (kv.key.name === searchKey) {
+                        return kv;
+                    }
                 }
             }
+        }
+        catch(e){
+            console.log(e)
+            console.log("search key:", searchKey)
+            return null
         }
         return null;
     }
