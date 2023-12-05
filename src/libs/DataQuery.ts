@@ -477,6 +477,7 @@ export class DataQuery {
     }
     limit(limit:number){
         this.limitNumber = limit
+        return this
     }
     buildSQLstmt(queryList: Query[]) {
         //using
