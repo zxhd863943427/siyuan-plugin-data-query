@@ -33,11 +33,15 @@ export class DataViewBlock {
         if (key === "dom") {
             return this.dom
         }
+        //sqldata 和 blockItem.block 只有'created','updated' 需要解析
         if (this.sqlData[key]) {
+            if (['created','updated'].indexOf(key)!=-1){
             return this.parseCommonValue(this.sqlData[key])
+            }
+            return this.sqlData[key]
         }
         if (this.blockItem.block[key]) {
-            return this.parseCommonValue(this.blockItem.block[key])
+            return this.blockItem.block[key]
         }
         if (this.blockItem.block.ial[key]) {
             return this.parseCommonValue(this.blockItem.block.ial[key])
