@@ -51,10 +51,17 @@ export class DataQuery {
 
     id(id, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "id",
                     value: `'%${id}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "id",
+                    value: `'${id}'`,
                     operator: operator
                 })
         }
@@ -64,10 +71,17 @@ export class DataQuery {
 
     parent_id(parent_id, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "parent_id",
                     value: `'%${parent_id}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "parent_id",
+                    value: `'${parent_id}'`,
                     operator: operator
                 })
         }
@@ -77,10 +91,17 @@ export class DataQuery {
 
     root_id(root_id, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "root_id",
                     value: `'%${root_id}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "root_id",
+                    value: `'${root_id}'`,
                     operator: operator
                 })
         }
@@ -90,10 +111,17 @@ export class DataQuery {
 
     hash(hash, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "hash",
                     value: `'%${hash}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "hash",
+                    value: `'${hash}'`,
                     operator: operator
                 })
         }
@@ -103,10 +131,17 @@ export class DataQuery {
 
     box(box, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "box",
                     value: `'%${box}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "box",
+                    value: `'${box}'`,
                     operator: operator
                 })
         }
@@ -116,10 +151,17 @@ export class DataQuery {
 
     path(path, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "path",
                     value: `'%${path}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "path",
+                    value: `'${path}'`,
                     operator: operator
                 })
         }
@@ -129,10 +171,17 @@ export class DataQuery {
 
     hpath(hpath, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "hpath",
                     value: `'%${hpath}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "hpath",
+                    value: `'${hpath}'`,
                     operator: operator
                 })
         }
@@ -142,10 +191,17 @@ export class DataQuery {
 
     name(name, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "name",
                     value: `'%${name}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "name",
+                    value: `'${name}'`,
                     operator: operator
                 })
         }
@@ -155,10 +211,17 @@ export class DataQuery {
 
     alias(alias, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "alias",
                     value: `'%${alias}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "alias",
+                    value: `'${alias}'`,
                     operator: operator
                 })
         }
@@ -168,10 +231,17 @@ export class DataQuery {
 
     memo(memo, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "memo",
                     value: `'%${memo}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "memo",
+                    value: `'${memo}'`,
                     operator: operator
                 })
         }
@@ -198,7 +268,7 @@ export class DataQuery {
             default:
                 this.queryList.push({
                     type: "tag",
-                    value: `'%#${tag}#%'`,
+                    value: `'${tag}'`,
                     operator: operator
                 })
         }
@@ -208,10 +278,17 @@ export class DataQuery {
 
     content(content, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "content",
                     value: `'%${content}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "content",
+                    value: `'${content}'`,
                     operator: operator
                 })
         }
@@ -221,10 +298,17 @@ export class DataQuery {
 
     fcontent(fcontent, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "fcontent",
                     value: `'%${fcontent}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "fcontent",
+                    value: `'${fcontent}'`,
                     operator: operator
                 })
         }
@@ -234,10 +318,17 @@ export class DataQuery {
 
     markdown(markdown, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "markdown",
                     value: `'%${markdown}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "markdown",
+                    value: `'${markdown}'`,
                     operator: operator
                 })
         }
@@ -247,10 +338,17 @@ export class DataQuery {
 
     length(length, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "length",
                     value: `'%${length}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "length",
+                    value: `'${length}'`,
                     operator: operator
                 })
         }
@@ -260,10 +358,17 @@ export class DataQuery {
 
     type(type, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "type",
                     value: `'%${type}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "type",
+                    value: `'${type}'`,
                     operator: operator
                 })
         }
@@ -273,10 +378,17 @@ export class DataQuery {
 
     subtype(subtype, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "subtype",
                     value: `'%${subtype}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "subtype",
+                    value: `'${subtype}'`,
                     operator: operator
                 })
         }
@@ -306,10 +418,17 @@ export class DataQuery {
 
     sort(sort, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "sort",
                     value: `'%${sort}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "sort",
+                    value: `'${sort}'`,
                     operator: operator
                 })
         }
@@ -319,10 +438,17 @@ export class DataQuery {
 
     created(created, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "created",
                     value: `'%${created}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "created",
+                    value: `'${created}'`,
                     operator: operator
                 })
         }
@@ -332,10 +458,17 @@ export class DataQuery {
 
     updated(updated, operator: string = "like") {
         switch (operator) {
-            default:
+            case "like":
                 this.queryList.push({
                     type: "updated",
                     value: `'%${updated}%'`,
+                    operator: operator
+                })
+                break;
+            default:
+                this.queryList.push({
+                    type: "updated",
+                    value: `'${updated}'`,
                     operator: operator
                 })
         }
