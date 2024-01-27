@@ -51,9 +51,9 @@ export class DataQuery {
     }
 
     
-    outlinks(blockArg:string|string[]|DataViewBlock|DataViewBlock[]|null){
+    outlinks(blockArg:string|string[]|DataViewBlock|DataViewBlock[]|undefined){
         let idList = []
-        if (blockArg === null && this.blockList.length != 0){
+        if (blockArg === undefined && this.blockList.length != 0){
             idList = this.blockList.map(x=>{return x.getValue("id")})
         }
         else if (typeof(blockArg) == "string"){
@@ -84,9 +84,9 @@ export class DataQuery {
         return this
     }
 
-    backlinks(blockArg:string|string[]|DataViewBlock|DataViewBlock[]|null){
+    backlinks(blockArg:string|string[]|DataViewBlock|DataViewBlock[]|undefined){
         let idList = []
-        if (blockArg === null && this.blockList.length != 0){
+        if (blockArg === undefined && this.blockList.length != 0){
             idList = this.blockList.map(x=>{return x.getValue("id")})
         }
         else if (typeof(blockArg) == "string"){
