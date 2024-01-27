@@ -43,6 +43,24 @@ export class DataView extends DataQuery{
         return new DataViewBlock(blockItem, sqlData)
     }
 
+    outlinks(blockArg:string|string[]|DataViewBlock|DataViewBlock[]|undefined){
+        if (!blockArg){
+            return super.outlinks(this.protyle.block.rootID)
+        }
+        else {
+            return super.outlinks(blockArg)
+        }
+    }
+
+    backlinks(blockArg:string|string[]|DataViewBlock|DataViewBlock[]|undefined){
+        if (!blockArg){
+            return super.backlinks(this.protyle.block.rootID)
+        }
+        else {
+            return super.backlinks(blockArg)
+        }
+    }
+
 
     addElement(CustomEmbed: HTMLElement | string ){
         const customElem = document.createElement("div")

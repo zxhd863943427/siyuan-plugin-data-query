@@ -116,6 +116,10 @@ export class DataQuery {
         return this
     }
 
+    addQueryList(item:Query){
+        this.queryList.push(item)
+    }
+
     id(id, operator: string = "like") {
         switch (operator) {
             case "like":
