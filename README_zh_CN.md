@@ -38,6 +38,14 @@
 
 ![database](asset/databaseValue.png)
 
+## 更新日志
+
+v0.0.6增加出链反链查询，原型如下：
+```js
+outlinks(blockArg:string|string[]|DataViewBlock|DataViewBlock[]|undefined)
+backlinks(blockArg:string|string[]|DataViewBlock|DataViewBlock[]|undefined)
+```
+
 ## api 参考
 
 这个插件向全局暴露一个变量，DV，即 DataView 的缩写（你也可以看成是对 siyuan 笔记开发者 D、V 的致敬）。这个变量是 Dataview 类的构造函数。
