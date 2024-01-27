@@ -15,6 +15,7 @@ export class DataQuery {
 
         this.SQLstmt = ""
         this.queryList = []
+        this.blockList = []
         this.limitNumber = 256
     }
 
@@ -46,6 +47,72 @@ export class DataQuery {
     cleanQuery() {
         this.SQLstmt = ""
         this.queryList = []
+        return this
+    }
+
+    
+    outlinks(blockArg:string|string[]|DataViewBlock|DataViewBlock[]|null){
+        let idList = []
+        if (blockArg === null && this.blockList.length != 0){
+            idList = this.blockList.map(x=>{return x.getValue("id")})
+        }
+        else if (typeof(blockArg) == "string"){
+            idList.push(blockArg)
+        }
+        else if (blockArg instanceof DataViewBlock){
+            idList.push(blockArg.getValue("id"))
+        }
+        else if(Array.isArray(blockArg) && blockArg.length != 0){
+            let firstItem = blockArg[0]
+            if(typeof(firstItem) == "string"){
+                idList = [...blockArg]
+            }
+            else if(firstItem instanceof DataViewBlock){
+                idList = (blockArg as DataViewBlock[]).map((x:DataViewBlock)=>{return x.getValue("id")})
+            }
+        }
+
+        if (idList.length === 0 ){
+            return
+        }
+        this.queryList.push({
+            type: "outlinks",
+            value: idList,
+            operator: "nop"
+        })
+
+        return this
+    }
+
+    backlinks(blockArg:string|string[]|DataViewBlock|DataViewBlock[]|null){
+        let idList = []
+        if (blockArg === null && this.blockList.length != 0){
+            idList = this.blockList.map(x=>{return x.getValue("id")})
+        }
+        else if (typeof(blockArg) == "string"){
+            idList.push(blockArg)
+        }
+        else if (blockArg instanceof DataViewBlock){
+            idList.push(blockArg.getValue("id"))
+        }
+        else if(Array.isArray(blockArg) && blockArg.length != 0){
+            let firstItem = blockArg[0]
+            if(typeof(firstItem) == "string"){
+                idList = [...blockArg]
+            }
+            else if(firstItem instanceof DataViewBlock){
+                idList = (blockArg as DataViewBlock[]).map((x:DataViewBlock)=>{return x.getValue("id")})
+            }
+        }
+
+        if (idList.length === 0 ){
+            return
+        }
+        this.queryList.push({
+            type: "backlinks",
+            value: idList,
+            operator: "nop"
+        })
         return this
     }
 
@@ -496,6 +563,13 @@ export class DataQuery {
         switch (queryItem.type) {
             case "ial":
                 return `  id in (select block_id from attributes where name ${queryItem.operator} ${(queryItem.value as any).ialKey} and value ${queryItem.operator} ${(queryItem.value as any).ialValue}) `
+
+            case "outlinks":
+                return `id in (SELECT def_block_id FROM refs WHERE root_id in ('${(queryItem.value as string[]).join("', '")}'))`
+
+            case "backlinks":
+                return `id in (SELECT block_id FROM refs WHERE def_block_root_id in ('${(queryItem.value as string[]).join("', '")}'))`
+
             default:
                 return ` ${queryItem.type} ${queryItem.operator} ${queryItem.value} `
         }
