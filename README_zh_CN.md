@@ -38,6 +38,8 @@
 
 ![database](asset/databaseValue.png)
 
+<video controls src="asset/dataquery-with-database.mp4" title="Title"></video>
+
 ## 更新日志
 
 v0.0.6增加出链反链查询，原型如下：
