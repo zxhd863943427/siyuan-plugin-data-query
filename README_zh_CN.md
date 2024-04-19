@@ -38,7 +38,7 @@
 
 ![database](asset/databaseValue.png)
 
-<video controls src="asset/dataquery-with-database.mp4" title="Title"></video>
+<video controls src="./asset/dataquery-with-database.mp4" title="Title"></video>
 
 ## 更新日志
 
